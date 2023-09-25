@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using BusinessLogic;
+﻿using BusinessLogicLayer.Interfaces;
 using DataModel;
-using BusinessLogic.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebHoaQua.Controllers
 {
@@ -10,17 +9,18 @@ namespace WebHoaQua.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
-        private IAccountsBusiness _accountBusiness;
-        public AccountsController(IAccountsBusiness accountBusiness) 
+        private IAccountsBusiness _accountsBusiness;
+
+        public AccountsController(IAccountsBusiness accountsBusiness)
         {
-            _accountBusiness = accountBusiness;
+            _accountsBusiness = accountsBusiness;
         }
 
         [Route("getaccounts")]
         [HttpGet]
         public Accounts GetAccountsAll()
         {
-            return _accountBusiness.GetAccountsAll();
+            return _accountsBusiness.GetAccountsAll();
         }
     }
 

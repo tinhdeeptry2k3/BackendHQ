@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DataModel;
 
-namespace BusinessLogic.Interfaces
+namespace BusinessLogicLayer.Interfaces
 {
     public partial interface IAccountsBusiness
     {

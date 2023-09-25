@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebHoaQua", "WebHoaQua\WebH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataModel", "DataModel\DataModel.csproj", "{F61AB2C9-70BD-4154-9477-23DF7FCB845C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{0319E8B5-8048-4307-BA52-9AC1D44923D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccess\DataAccessLayer.csproj", "{0319E8B5-8048-4307-BA52-9AC1D44923D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{69E4C95E-4DE0-4788-B634-F87A46FDD179}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogic\BusinessLogicLayer.csproj", "{69E4C95E-4DE0-4788-B634-F87A46FDD179}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,14 +1,14 @@
-﻿using DataModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataModel;
 
-namespace DataAccess.Interfaces
+namespace DataAccessLayer
 {
     public partial interface IAccountsRepository
     {
-        public Accounts GetAccountsAll();
+        Accounts GetAllAccounts();
     }
 }

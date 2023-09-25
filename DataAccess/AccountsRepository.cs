@@ -1,31 +1,23 @@
-﻿using DataAccess.Interfaces;
-using DataAccessLayer;
+﻿using DataAccessLayer;
 using DataModel;
 
-
-namespace DataAccess
+namespace DataAccessLayer
 {
-    public class AccountsRepository : IAccountsRepository
+    public class AccountsRepository: IAccountsRepository
     {
-        private IDatabaseHelper _databaseHelper;
-
-        public AccountsRepository(IDatabaseHelper databaseHelper)
+        private IDatabaseHelper _dbHelper;
+        public AccountsRepository(IDatabaseHelper dbHelper)
         {
-            _databaseHelper = databaseHelper;
+            _dbHelper = dbHelper;
         }
 
-        public Accounts GetAccountsAll()
+        public Accounts GetAllAccounts()
         {
             string msgError = "";
-            try
-            {
-                var dt = _databaseHelper.ExecuteQueryToDataTable("SELECT * FROM Accounts", out msgError);
-                return dt.ConvertTo<Accounts>().FirstOrDefault();
-            }   
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            var dt = _dbHelper.ExecuteQueryToDataTable("SELECT * FROM Accounts", out msgError);
+            return dt.ConvertTo<Accounts>().FirstOrDefault();
         }
+
+
     }
 }

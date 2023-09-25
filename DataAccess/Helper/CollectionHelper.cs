@@ -13,7 +13,7 @@ namespace DataAccessLayer
         {
             Settings = new JsonSerializerSettings
             {
-                Formatting = (Newtonsoft.Json.Formatting)System.Xml.Formatting.None,
+                Formatting = Formatting.None,
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 NullValueHandling = NullValueHandling.Ignore,
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
