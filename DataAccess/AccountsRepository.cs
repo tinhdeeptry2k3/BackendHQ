@@ -18,6 +18,5 @@ namespace DataAccessLayer
             return dt.ConvertTo<Accounts>().FirstOrDefault();
         }
 
-
     }
 }

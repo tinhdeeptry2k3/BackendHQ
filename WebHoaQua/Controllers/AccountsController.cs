@@ -22,6 +22,7 @@ namespace WebHoaQua.Controllers
         {
             return _accountsBusiness.GetAccountsAll();
         }
+
     }
 
     

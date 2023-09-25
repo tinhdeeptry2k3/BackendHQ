@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using DataModel;
 
-namespace DataAccessLayer
+namespace DataAccessLayer.Interfaces
 {
-    public partial interface IAccountsRepository
+    public partial interface IUserRepository
     {
-        Accounts GetAllAccounts();
-
+        Accounts Login(string username, string password);
     }
 }

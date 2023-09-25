@@ -10,5 +10,6 @@ namespace BusinessLogicLayer.Interfaces
     public partial interface IAccountsBusiness
     {
         Accounts GetAccountsAll();
+
     }
 }
