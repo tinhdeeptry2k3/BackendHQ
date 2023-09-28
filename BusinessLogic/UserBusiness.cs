@@ -1,5 +1,4 @@
-﻿using BusinessLogicLayer;
-using DataAccessLayer;
+﻿using DataAccessLayer;
 using DataAccessLayer.Interfaces;
 using DataModel;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +14,7 @@ namespace BusinessLogicLayer
     {
         private IUserRepository _res;
         private string secret;
+
         public UserBusiness(IUserRepository res, IConfiguration configuration)
         {
             _res = res;
@@ -32,7 +32,8 @@ namespace BusinessLogicLayer
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.username.ToString())
+                    new Claim(ClaimTypes.Name, user.username.ToString()),
+                    new Claim(ClaimTypes.Role, user.level.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.Aes128CbcHmacSha256)
@@ -40,6 +41,16 @@ namespace BusinessLogicLayer
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.token = tokenHandler.WriteToken(token);
             return user;
+        }
+
+        public bool Register(string taikhoan, string matkhau)
+        {
+            return _res.Register(taikhoan,matkhau);
+        }
+
+        public bool Update(string fullname,string address, string phone , string username)
+        {
+            return _res.Update(fullname,address,phone,username);
         }
     }
 }

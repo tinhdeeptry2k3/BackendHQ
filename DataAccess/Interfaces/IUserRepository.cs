@@ -10,5 +10,7 @@ namespace DataAccessLayer.Interfaces
     public partial interface IUserRepository
     {
         Accounts Login(string username, string password);
+        bool Register(string username, string password);
+        bool Update(string fullname,string address,string phone,string username);
     }
 }

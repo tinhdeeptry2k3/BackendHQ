@@ -10,5 +10,7 @@ namespace BusinessLogicLayer
     public partial interface IUserBusiness
     {
         Accounts Login(string taikhoan, string matkhau);
+        bool Register(string taikhoan, string matkhau);
+        bool Update(string fullname, string address, string phone, string username);
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebHoaQua.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -23,8 +24,62 @@ namespace WebHoaQua.Controllers
         {
             var user = _userBusiness.Login(model.Username, model.Password);
             if (user == null)
-                return BadRequest(new { message = "Tài khoản hoặc mật khẩu không đúng!" });
-            return Ok(new { taikhoan = user.username, token = user.token });
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "Tài khoản hoặc mật khẩu không chính xác !"
+                });
+
+            return Ok(new {
+                status = true,
+                username = user.username,
+                token = user.token 
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterModel model)
+        {
+            bool register = _userBusiness.Register(model.username, model.password);
+            if(!register)
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "Đăng kí tài khoản không thành công !"
+                });
+            }
+
+            return Ok(new
+            {
+                status = true,
+                message = "Đăng kí tài khoản thành công !",
+                username = model.username,
+                password = model.password
+            });
+        }
+
+        [HttpPost("update")]
+        public IActionResult Update([FromBody] UpdateModel model)
+        {
+            bool update = _userBusiness.Update(model.fullname, model.address, model.phone, User.Identity.Name);
+            if (update)
+            {
+                return Ok(new
+                {
+                    status = true,
+                    message = "Cập nhật thông tin thành công!"
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "Cập nhật thông tin thất bại!"
+                });
+            }
         }
     }
 }

@@ -14,5 +14,6 @@ namespace DataModel
         public int quantity { get; set; }
         public string description { get; set; }
         public int category_id { get; set; }
+        public string image { get;set; }
     }
 }

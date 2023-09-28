@@ -7,9 +7,8 @@ using DataModel;
 
 namespace BusinessLogicLayer.Interfaces
 {
-    public partial interface IAccountsBusiness
+    public partial interface IOrdersBusiness
     {
-        Accounts GetAccountsAll();
-
+        string Insert(List<OrderProductModel> lstProducts, Orders orders, string username);
     }
 }

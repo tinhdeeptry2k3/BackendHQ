@@ -18,10 +18,19 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddTransient<IDatabaseHelper, DatabaseHelper>();
-builder.Services.AddTransient<IAccountsRepository, AccountsRepository>();
-builder.Services.AddTransient<IAccountsBusiness, AccountsBusiness>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserBusiness, UserBusiness>();
+
+builder.Services.AddTransient<ICategorysRepository,CategorysReposity>();
+builder.Services.AddTransient<ICategorysBusiness,CategorysBusiness>();
+
+builder.Services.AddTransient<IProductsRepository, ProductsRepository>();
+builder.Services.AddTransient<IProductsBusiness, ProductsBusiness>();
+
+builder.Services.AddTransient<IOrderRepository, OrderRepository >();
+builder.Services.AddTransient<IOrdersBusiness, OrdersBusiness >();
+
+
 
 
 
@@ -68,6 +77,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
