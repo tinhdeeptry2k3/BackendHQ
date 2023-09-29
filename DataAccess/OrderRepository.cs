@@ -73,5 +73,73 @@ namespace DataAccessLayer
                 return ex.ToString();
             }
         }
+
+        public bool Update(Orders orders)
+        {
+            try
+            {
+                var result = _dbHelper.ExecuteNoneQuery(String.Format("UPDATE Orders SET status = '{0}' WHERE id = '{1}'", orders.status, orders.id));
+                if(string.IsNullOrEmpty(result) )
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(string id)
+        {
+            try
+            {
+                var result = _dbHelper.ExecuteNoneQuery(String.Format("DELETE FROM Orders WHERE id = {0}", id));
+                if(string.IsNullOrEmpty(result) )
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public List<Orders> GetList(string username)
+        {
+            var msgErr = "";
+            try
+            {
+                var result = _dbHelper.ExecuteQueryToDataTable(String.Format("SELECT * FROM Orders WHERE username = '{0}'", username), out msgErr);
+                return result.ConvertTo<Orders>().ToList();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public Orders GetByID(string id, string username)
+        {
+            var msgErr = "";
+            try
+            {
+                var result = _dbHelper.ExecuteQueryToDataTable(String.Format("SELECT * FROM Orders WHERE id = '{0}' AND username = '{1}'", id, username), out msgErr);
+                return result.ConvertTo<Orders>().FirstOrDefault();
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

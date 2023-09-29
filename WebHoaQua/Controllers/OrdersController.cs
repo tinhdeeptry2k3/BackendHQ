@@ -28,5 +28,50 @@ namespace WebHoaQua.Controllers
                 message = result,
             });
         }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost("update")]
+        public IActionResult Update(Orders orders)
+        {
+            var result = ordersBusiness.Update(orders);
+            return Ok(new
+            {
+                message = result
+            });
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost("delete/{id}")]
+        public IActionResult Update(string id)
+        {
+            var result = ordersBusiness.Delete(id);
+            return Ok(new
+            {
+                message = result
+            });
+        }
+
+
+        //cho user
+        [HttpPost("getlist")]
+        public IActionResult GetList()
+        {
+            var result = ordersBusiness.GetList(User.Identity.Name);
+            return Ok(new
+            {
+                result
+            });
+        }
+
+        //cho user
+        [HttpPost("getbyid/{id}")]
+        public IActionResult GetByID(string id)
+        {
+            var result = ordersBusiness.GetByID(id,User.Identity.Name);
+            return Ok(new
+            {
+                result
+            });
+        }
     }
 }

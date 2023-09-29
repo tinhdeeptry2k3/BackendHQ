@@ -20,5 +20,22 @@ namespace BusinessLogicLayer
         {
             return _res.Insert(lstProducts, orders, username);
         }
+
+        public bool Update(Orders orders)
+        {
+            return _res.Update(orders);
+        }
+        public bool Delete(string id)
+        {
+            return _res.Delete(id);
+        }
+        public List<Orders> GetList(string username)
+        {
+            return _res.GetList(username);
+        }
+        public Orders GetByID(string id, string username)
+        {
+            return _res.GetByID(id,username);
+        }
     }
 }

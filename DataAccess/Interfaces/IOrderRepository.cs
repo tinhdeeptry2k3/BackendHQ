@@ -10,5 +10,9 @@ namespace DataAccessLayer.Interfaces
     public partial interface IOrderRepository
     {
         string Insert(List<OrderProductModel> lstProducts,Orders orders,string username);
+        bool Update(Orders orders);
+        bool Delete(string id);
+        List<Orders> GetList(string username);
+        Orders GetByID(string id, string username);
     }
 }
