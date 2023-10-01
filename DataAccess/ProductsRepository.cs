@@ -18,20 +18,40 @@ namespace DataAccessLayer
 
         public bool Insert(Products products)
         {
-            string msgErr = "";
+            //string msgErr = "";
+            //try
+            //{
+            //    var sql = String.Format("SELECT * FROM Categorys WHERE id = '{0}'",products.category_id);
+            //    var row = _dbHelper.ExecuteQueryToDataTable(sql, out msgErr);
+            //    if (row.ConvertTo<Accounts>().FirstOrDefault() != null)
+            //    {
+            //        return false;
+            //    }
+            //    sql = String.Format("INSERT INTO Products(name,price,quantity,description,category_id,image) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')", products.name,products.price,products.quantity,products.description,products.category_id,products.image);
+            //    _dbHelper.ExecuteNoneQuery(sql);
+            //    return true;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
+            string msgError = "";
             try
             {
-                var sql = String.Format("SELECT * FROM Categorys WHERE id = '{0}'",products.category_id);
-                var row = _dbHelper.ExecuteQueryToDataTable(sql, out msgErr);
-                if (row.ConvertTo<Accounts>().FirstOrDefault() != null)
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_create_product",
+                "@name", products.name,
+                "@price", products.price,
+                "@quantity",products.quantity,
+                "@description",products.description,
+                "@category_id", products.category_id,
+                "@image", products.image);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
-                    return false;
+                    throw new Exception(Convert.ToString(result) + msgError);
                 }
-                sql = String.Format("INSERT INTO Products(name,price,quantity,description,category_id,image) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')", products.name,products.price,products.quantity,products.description,products.category_id,products.image);
-                _dbHelper.ExecuteNoneQuery(sql);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -39,34 +59,61 @@ namespace DataAccessLayer
 
         public bool Update(Products products)
         {
+            string msgError = "";
             try
             {
-                var sql = String.Format("UPDATE Products SET name = '{0}',price = '{1}',quantity = '{2}',description = '{3}',category_id = '{4}',image = {5} WHERE id = {6}", products.name,products.price,products.quantity,products.description,products.category_id,products.image,products.id);
-                _dbHelper.ExecuteNoneQuery(sql); return true;
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_update_product",
+                "@name", products.name,
+                "@price", products.price,
+                "@quantity", products.quantity,
+                "@description", products.description,
+                "@category_id", products.category_id,
+                "@image", products.image,
+                "@id",products.id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public bool Delete(string id)
         {
+            string msgError = "";
             try
             {
-                var sql = String.Format("DELETE FROM Products WHERE id = {0}", id);
-                _dbHelper.ExecuteNoneQuery(sql); return true;
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_delete_product",
+                "@id",id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public List<Products> GetList()
         {
+            string msgError = "";
             try
             {
-                string msgErr = "";
-                var sql = "SELECT * FROM Products";
-                var data = _dbHelper.ExecuteQueryToDataTable(sql, out msgErr);
-                return data.ConvertTo<Products>().ToList();
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_product");
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return result.ConvertTo<Products>().ToList();
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -74,14 +121,17 @@ namespace DataAccessLayer
 
         public Products GetById(string id)
         {
-            string msgErr = "";
+            string msgError = "";
             try
             {
-                var sql = String.Format("SELECT * FROM Products WHERE id = '{0}'", id);
-                var data = _dbHelper.ExecuteQueryToDataTable(sql, out msgErr);
-                return data.ConvertTo<Products>().FirstOrDefault();
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_product_by_id","@id",id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return result.ConvertTo<Products>().FirstOrDefault();
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }

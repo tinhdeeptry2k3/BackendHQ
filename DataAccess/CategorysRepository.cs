@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using DataModel;
@@ -17,13 +18,18 @@ namespace DataAccessLayer.Interfaces
 
         public bool Insert(Categorys categorys)
         {
+            string msgError = "";
             try
             {
-                var sql = String.Format("INSERT INTO Categorys(name) VALUES ('{0}')", categorys.name);
-                _dbHelper.ExecuteNoneQuery(sql);
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_create_categorys",
+                "@name", categorys.name);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -31,34 +37,56 @@ namespace DataAccessLayer.Interfaces
 
         public bool Update(Categorys categorys)
         {
+            string msgError = "";
             try
             {
-                var sql = String.Format("UPDATE Categorys SET name = '{0}' WHERE id = {1}", categorys.name, categorys.id);
-                _dbHelper.ExecuteNoneQuery(sql); return true;
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_update_categorys",
+                "@name", categorys.name,
+                "@id",categorys.id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public bool Delete(string id )
         {
+            string msgError = "";
             try
             {
-                var sql = String.Format("DELETE FROM Categorys WHERE id = {0}", id);
-                _dbHelper.ExecuteNoneQuery(sql); return true;
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_delete_categorys",
+                "@id",id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public List<Categorys> GetList()
         {
+            string msgError = "";
             try
             {
-                string msgErr = "";
-                var sql = "SELECT * FROM Categorys";
-                var data = _dbHelper.ExecuteQueryToDataTable(sql,out msgErr);
-                return data.ConvertTo<Categorys>().ToList();
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_categorys");
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return result.ConvertTo<Categorys>().ToList();
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }

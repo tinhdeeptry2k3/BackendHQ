@@ -14,5 +14,6 @@ namespace DataAccessLayer.Interfaces
         bool Delete(string id);
         List<Orders> GetList(string username);
         Orders GetByID(string id, string username);
+        List<OrderDetails> GetOrderDetails(string id, string username);
     }
 }

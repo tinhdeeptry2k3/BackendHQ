@@ -73,5 +73,16 @@ namespace WebHoaQua.Controllers
                 result
             });
         }
+
+        //cho user
+        [HttpGet("details/{id}")]
+        public IActionResult GetDetails(string id)
+        {
+            var result = ordersBusiness.GetOrderDetails(id, User.Identity.Name);
+            return Ok(new
+            {
+                result
+            });
+        }
     }
 }

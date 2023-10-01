@@ -30,7 +30,7 @@ namespace DataAccessLayer
                     return "no_item_in_order";
                 }
 
-                if(username == orders.username)
+                if(username != orders.username)
                 {
                     return "username_false";
                 }
@@ -38,11 +38,23 @@ namespace DataAccessLayer
                 var orderCode = tool.RandomText(10);
 
 
-                var result = _dbHelper.ExecuteNoneQuery(String.Format("INSERT INTO Orders (id,username,address,phone,status) VALUES ('{0}','{1}','{2}','{3}','{4}')",orderCode, username, orders.address, orders.phone, "Đang xử lý"));
-                
-                if(!string.IsNullOrEmpty(result))
+                string msgError = "";
+                try
                 {
-                    return "create_order_error";
+                    var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_create_orders",
+                    "@id",orderCode,
+                    "@username",username,
+                    "@address",orders.address,
+                    "@phone",orders.phone,
+                    "@status","Đang xử lý");
+                    if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                    {
+                        throw new Exception(Convert.ToString(result) + msgError);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return "create_order_error: " + ex.ToString();
                 }
 
                 foreach(var item in lstProducts)
@@ -58,7 +70,7 @@ namespace DataAccessLayer
                         continue;
                     }
 
-                    result = _dbHelper.ExecuteNoneQuery(String.Format("INSERT INTO OrderDetails (order_id,product_id,product_name,quantity,image,total_price) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')", orderCode, product.id, product.name, item.quantity, product.image, item.quantity * product.price));
+                    var result = _dbHelper.ExecuteNoneQuery(String.Format("INSERT INTO OrderDetails (order_id,product_id,product_name,quantity,image,total_price) VALUES ('{0}','{1}','{2}','{3}','{4}','{5}')", orderCode, product.id, product.name, item.quantity, product.image, item.quantity * product.price));
                     if(string.IsNullOrEmpty(result))
                     {
                         _dbHelper.ExecuteNoneQuery(String.Format("UPDATE Products SET quantity = '{0}' WHERE id = '{1}'", product.quantity - item.quantity, product.id));
@@ -76,19 +88,19 @@ namespace DataAccessLayer
 
         public bool Update(Orders orders)
         {
+            string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteNoneQuery(String.Format("UPDATE Orders SET status = '{0}' WHERE id = '{1}'", orders.status, orders.id));
-                if(string.IsNullOrEmpty(result) )
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_update_orders",
+                "@status", orders.status,
+                "@id",orders.id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
-                    return true;
+                    throw new Exception(Convert.ToString(result) + msgError);
                 }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -96,19 +108,18 @@ namespace DataAccessLayer
 
         public bool Delete(string id)
         {
+            string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteNoneQuery(String.Format("DELETE FROM Orders WHERE id = {0}", id));
-                if(string.IsNullOrEmpty(result) )
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_delete_orders",
+                "@id", id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
-                    return true;
+                    throw new Exception(Convert.ToString(result) + msgError);
                 }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
-            catch
+            catch (Exception ex)
             {
                 return false;
             }
@@ -116,13 +127,18 @@ namespace DataAccessLayer
 
         public List<Orders> GetList(string username)
         {
-            var msgErr = "";
+            string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteQueryToDataTable(String.Format("SELECT * FROM Orders WHERE username = '{0}'", username), out msgErr);
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_orders",
+                "@username", username);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
                 return result.ConvertTo<Orders>().ToList();
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -130,16 +146,49 @@ namespace DataAccessLayer
 
         public Orders GetByID(string id, string username)
         {
-            var msgErr = "";
+            string msgError = "";
             try
             {
-                var result = _dbHelper.ExecuteQueryToDataTable(String.Format("SELECT * FROM Orders WHERE id = '{0}' AND username = '{1}'", id, username), out msgErr);
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_orders_by_id",
+                "@username", username,
+                "@id",id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
                 return result.ConvertTo<Orders>().FirstOrDefault();
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
+        }
+
+        public List<OrderDetails> GetOrderDetails(string id, string username)
+        {
+            Orders orders = GetByID(id, username);
+            if(orders == null)
+            {
+                return null;
+            }
+
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_get_order_details",
+                "@id", id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return result.ConvertTo<OrderDetails>().ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+
         }
     }
 }
