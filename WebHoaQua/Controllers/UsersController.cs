@@ -24,7 +24,7 @@ namespace WebHoaQua.Controllers
         {
             var user = _userBusiness.Login(model.Username, model.Password);
             if (user == null)
-                return BadRequest(new
+                return Ok(new
                 {
                     status = false,
                     message = "Tài khoản hoặc mật khẩu không chính xác !"
@@ -44,7 +44,7 @@ namespace WebHoaQua.Controllers
             bool register = _userBusiness.Register(model.username, model.password);
             if(!register)
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     status = false,
                     message = "Đăng kí tài khoản không thành công !"
@@ -74,12 +74,19 @@ namespace WebHoaQua.Controllers
             }
             else
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     status = false,
                     message = "Cập nhật thông tin thất bại!"
                 });
             }
+        }
+
+        [HttpPost("getinfo")]
+        public IActionResult GetInfo()
+        {
+            var results = _userBusiness.GetInfo(User.Identity.Name);
+            return Ok(results);
         }
     }
 }

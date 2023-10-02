@@ -52,5 +52,10 @@ namespace BusinessLogicLayer
         {
             return _res.Update(fullname,address,phone,username);
         }
+
+        public Accounts GetInfo(string username)
+        {
+            return _res.GetInfo(username);
+        }
     }
 }
