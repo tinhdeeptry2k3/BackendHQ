@@ -85,7 +85,7 @@ namespace WebHoaQua.Controllers
         [HttpPost("getinfo")]
         public IActionResult GetInfo()
         {
-            var results = _userBusiness.GetInfo(User.Identity.Name);
+            var results = _userBusiness.GetInfo(User.Identity.Name) ;
             return Ok(results);
         }
     }
