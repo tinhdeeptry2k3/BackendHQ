@@ -88,5 +88,14 @@ namespace WebHoaQua.Controllers
             var results = _userBusiness.GetInfo(User.Identity.Name) ;
             return Ok(results);
         }
+
+        [HttpPost("checkaccount")]
+        public IActionResult CheckAccounts()
+        {
+            return Ok(new
+            {
+                status = true
+            });
+        }
     }
 }
