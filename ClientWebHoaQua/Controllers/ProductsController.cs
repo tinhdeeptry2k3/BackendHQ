@@ -7,7 +7,7 @@ using BusinessLogicLayer.Interfaces;
 namespace WebHoaQua.Controllers
 {
 
-    [Authorize(Roles = "admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -32,63 +32,5 @@ namespace WebHoaQua.Controllers
             return _productsBusiness.GetById(id);
         }
 
-        [HttpPost("insert")]
-        public IActionResult Insert([FromBody] Products products)
-        {
-            bool result = _productsBusiness.Insert(products);
-            if(result)
-            {
-                return Ok(new
-                {
-                    status = true,
-                    message = "Thêm sản phẩm thành công !",
-                    data = products
-                });
-            }
-            return BadRequest(new
-            {
-                status = false,
-                message = "Thêm sản phẩm thất bại !",
-                data = products
-            });
-        }
-
-        [HttpPost("update")]
-        public IActionResult Update([FromBody] Products products)
-        {
-            bool result = _productsBusiness.Update(products);
-            if (result)
-            {
-                return Ok(new
-                {
-                    status = true,
-                    message = "Cập nhật sản phẩm thành công !",
-                });
-            }
-            return BadRequest(new
-            {
-                status = false,
-                message = "Cập nhật sản phẩm thất bại !",
-            });
-        }
-
-        [HttpPost("delete/{id}")]
-        public IActionResult Delete(string id)
-        {
-            bool result = _productsBusiness.Delete(id);
-            if (result)
-            {
-                return Ok(new
-                {
-                    status = true,
-                    message = "Xóa sản phẩm thành công !",
-                });
-            }
-            return BadRequest(new
-            {
-                status = false,
-                message = "Xóa sản phẩm thất bại !",
-            });
-        }
     }
 }

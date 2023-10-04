@@ -13,5 +13,6 @@ namespace BusinessLogicLayer
         bool Register(string taikhoan, string matkhau);
         bool Update(string fullname, string address, string phone, string username);
         Accounts GetInfo(string username);
+        List<Accounts> GetAll();
     }
 }

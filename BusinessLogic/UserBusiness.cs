@@ -57,5 +57,10 @@ namespace BusinessLogicLayer
         {
             return _res.GetInfo(username);
         }
+
+        public List<Accounts> GetAll()
+        {
+            return _res.GetAll();
+        }
     }
 }

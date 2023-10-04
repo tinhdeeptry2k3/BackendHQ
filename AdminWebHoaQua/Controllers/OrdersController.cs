@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebHoaQua.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
@@ -29,6 +29,26 @@ namespace WebHoaQua.Controllers
             });
         }
 
+        [HttpPost("update")]
+        public IActionResult Update(Orders orders)
+        {
+            var result = ordersBusiness.Update(orders);
+            return Ok(new
+            {
+                message = result
+            });
+        }
+
+        [HttpPost("delete/{id}")]
+        public IActionResult Update(string id)
+        {
+            var result = ordersBusiness.Delete(id);
+            return Ok(new
+            {
+                message = result
+            });
+        }
+
 
         [HttpPost("getlist")]
         public IActionResult GetList()
@@ -43,7 +63,7 @@ namespace WebHoaQua.Controllers
         [HttpPost("getbyid/{id}")]
         public IActionResult GetByID(string id)
         {
-            var result = ordersBusiness.GetByID(id,User.Identity.Name);
+            var result = ordersBusiness.GetByID(id, User.Identity.Name);
             return Ok(new
             {
                 result

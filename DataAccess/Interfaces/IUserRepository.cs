@@ -13,5 +13,6 @@ namespace DataAccessLayer.Interfaces
         bool Register(string username, string password);
         bool Update(string fullname,string address,string phone,string username);
         Accounts GetInfo(string username);
+        List<Accounts> GetAll();
     }
 }
