@@ -17,5 +17,6 @@ namespace DataAccessLayer.Interfaces
         List<OrderDetails> GetOrderDetails(string id, string username);
 
         List<Orders> GetListByAdmin();
+        List<OrderDetails> GetOrderDetailsByAdmin(string id);
     }
 }

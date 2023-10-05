@@ -18,16 +18,16 @@ namespace WebHoaQua.Controllers
             this.ordersBusiness = ordersBusiness;
         }
 
-        [HttpPost("insert")]
-        public IActionResult Insert(CreateOrderModel createOrderModel)
-        {
+        //[HttpPost("insert")]
+        //public IActionResult Insert(CreateOrderModel createOrderModel)
+        //{
 
-            var result = ordersBusiness.Insert(createOrderModel.listProducts, createOrderModel.orders, User.Identity.Name);
-            return Ok(new
-            {
-                message = result,
-            });
-        }
+        //    var result = ordersBusiness.Insert(createOrderModel.listProducts, createOrderModel.orders, User.Identity.Name);
+        //    return Ok(new
+        //    {
+        //        message = result,
+        //    });
+        //}
 
         [HttpPost("update")]
         public IActionResult Update(Orders orders)
@@ -60,20 +60,20 @@ namespace WebHoaQua.Controllers
             });
         }
 
-        [HttpPost("getbyid/{id}")]
-        public IActionResult GetByID(string id)
-        {
-            var result = ordersBusiness.GetByID(id, User.Identity.Name);
-            return Ok(new
-            {
-                result
-            });
-        }
+        //[HttpPost("getbyid/{id}")]
+        //public IActionResult GetByID(string id)
+        //{
+        //    var result = ordersBusiness.GetByID(id, User.Identity.Name);
+        //    return Ok(new
+        //    {
+        //        result
+        //    });
+        //}
 
         [HttpGet("details/{id}")]
         public IActionResult GetDetails(string id)
         {
-            var result = ordersBusiness.GetOrderDetails(id, User.Identity.Name);
+            var result = ordersBusiness.GetOrderDetailsByAdmin(id);
             return Ok(new
             {
                 result

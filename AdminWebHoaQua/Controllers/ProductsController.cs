@@ -18,18 +18,22 @@ namespace WebHoaQua.Controllers
             _productsBusiness = productsBusiness;
         }
 
+        //Lấy danh sạch sản phẩm OK 
         [HttpGet("getlist")]
         public List<Products> GetList()
         {
             return _productsBusiness.GetList();
         }
 
+        //Láy thông tin sản phẩm OK 
         [HttpGet("getbyid/{id}")]
         public Products GetByID(string id)
         {
             return _productsBusiness.GetById(id);
         }
 
+
+        //Thêm sản phẩm OK 
         [HttpPost("insert")]
         public IActionResult Insert([FromBody] Products products)
         {
@@ -43,7 +47,7 @@ namespace WebHoaQua.Controllers
                     data = products
                 });
             }
-            return BadRequest(new
+            return Ok(new
             {
                 status = false,
                 message = "Thêm sản phẩm thất bại !",
@@ -51,6 +55,7 @@ namespace WebHoaQua.Controllers
             });
         }
 
+        //Cập nhật sản phẩm OK 
         [HttpPost("update")]
         public IActionResult Update([FromBody] Products products)
         {
@@ -63,13 +68,14 @@ namespace WebHoaQua.Controllers
                     message = "Cập nhật sản phẩm thành công !",
                 });
             }
-            return BadRequest(new
+            return Ok(new
             {
                 status = false,
                 message = "Cập nhật sản phẩm thất bại !",
             });
         }
 
+        //Xóa sản phẩm OK 
         [HttpPost("delete/{id}")]
         public IActionResult Delete(string id)
         {

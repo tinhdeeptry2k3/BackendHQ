@@ -46,5 +46,9 @@ namespace BusinessLogicLayer
         {
             return _res.GetListByAdmin();
         }
+        public List<OrderDetails> GetOrderDetailsByAdmin(string id)
+        {
+            return _res.GetOrderDetailsByAdmin(id);
+        }
     }
 }

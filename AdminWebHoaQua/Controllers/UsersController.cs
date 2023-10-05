@@ -18,6 +18,8 @@ namespace WebHoaQua.Controllers
             _userBusiness = userBusiness;
         }
 
+
+        //Kiểm tra đăng nhập OK
         [AllowAnonymous]
         [HttpPost("login")]
         public IActionResult Login([FromBody] AuthenticateModel model)
@@ -38,6 +40,8 @@ namespace WebHoaQua.Controllers
             });
         }
 
+
+        //Kiểm tra JWT OK
         [HttpPost("checkaccount")]
         public IActionResult CheckAccounts()
         {
@@ -47,6 +51,8 @@ namespace WebHoaQua.Controllers
             });
         }
 
+
+        //Lấy danh sách tài khoản OK 
         [HttpPost("getlist")]
         public IActionResult GetList()
         {
@@ -57,6 +63,8 @@ namespace WebHoaQua.Controllers
             });
         }
 
+
+        //Xóa tài khoản theo ID OK 
         [HttpPost("delete/{id}")]
         public IActionResult DeleteByID(string id)
         {
@@ -67,6 +75,8 @@ namespace WebHoaQua.Controllers
             });
         }
 
+
+        //Cập nhật thông tin tài khoản OK 
         [HttpPost("update")]
         public IActionResult Update([FromBody] UpdateModelByAdmin model)
         {
