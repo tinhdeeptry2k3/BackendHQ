@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Interfaces;
 using DataModel;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Net;
 using System.Security.Principal;
 
 namespace DataAccessLayer
@@ -150,6 +151,48 @@ namespace DataAccessLayer
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public bool DeleteById(string id)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_delete_by_id",
+                "@id", id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateByAdmin(UpdateModelByAdmin model)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_update_by_admin",
+                "@username", model.username,
+                "@level", model.level,
+                "@fullname", model.fullname,
+                "@address", model.address,
+                "@phone", model.phone);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
     }

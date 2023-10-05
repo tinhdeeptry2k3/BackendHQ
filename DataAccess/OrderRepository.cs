@@ -190,5 +190,23 @@ namespace DataAccessLayer
 
 
         }
+
+        public List<Orders> GetListByAdmin()
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_getlist_orders_by_admin");
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return result.ConvertTo<Orders>().ToList();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -62,5 +62,15 @@ namespace BusinessLogicLayer
         {
             return _res.GetAll();
         }
+
+        public bool DeleteById(string id)
+        {
+            return _res.DeleteById(id);
+        }
+
+        public bool UpdateByAdmin(UpdateModelByAdmin model)
+        {
+            return _res.UpdateByAdmin(model);
+        }
     }
 }

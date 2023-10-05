@@ -14,5 +14,9 @@ namespace BusinessLogicLayer
         bool Update(string fullname, string address, string phone, string username);
         Accounts GetInfo(string username);
         List<Accounts> GetAll();
+
+
+        bool DeleteById(string id);
+        bool UpdateByAdmin(UpdateModelByAdmin model);
     }
 }

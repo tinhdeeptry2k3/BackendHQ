@@ -42,6 +42,20 @@ namespace DataModel
         public string address { get; set; }
     }
 
+    public class UpdateModelByAdmin
+    {
+        [Required]
+        public string fullname { get; set; }
+        [Required]
+        public string phone { get; set; }
+        [Required]
+        public string address { get; set; }
+        [Required]
+        public string level { get; set; }
+        [Required]
+        public string username { get; set; }
+    }
+
     public class AppSettings
     {
         public string Secret { get; set; }

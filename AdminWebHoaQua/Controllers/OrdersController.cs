@@ -53,7 +53,7 @@ namespace WebHoaQua.Controllers
         [HttpPost("getlist")]
         public IActionResult GetList()
         {
-            var result = ordersBusiness.GetList(User.Identity.Name);
+            var result = ordersBusiness.GetListByAdmin();
             return Ok(new
             {
                 result
